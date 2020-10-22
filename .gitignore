@@ -1,0 +1,14 @@
+.ipynb_checkpoints/
+.DS_store
+.vscode/
+__pycache__/
+notebooks/
+
+*.db
+
+g.csv
+
+logs/
+data/
+database_specs
+experiments/

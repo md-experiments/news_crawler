@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3
+FROM python
 WORKDIR /news
 RUN pip install -r requirements.txt
 COPY . .

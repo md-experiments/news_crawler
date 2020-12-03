@@ -6,7 +6,7 @@ notebooks/
 
 *.db
 
-g.csv
+*.csv
 
 logs/
 data/

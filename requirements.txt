@@ -1,3 +1,4 @@
 newspaper3k
 warcio
 boto3
+pandas

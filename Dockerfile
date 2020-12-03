@@ -1,5 +1,5 @@
 FROM python
-WORKDIR /news
-RUN pip install -r requirements.txt
+WORKDIR /news_crawl
 COPY . .
+RUN pip install -r requirements.txt
 CMD ["/bin/bash"]

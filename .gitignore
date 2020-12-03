@@ -5,8 +5,9 @@ __pycache__/
 notebooks/
 
 *.db
-
 *.csv
+
+tmp*
 
 logs/
 data/

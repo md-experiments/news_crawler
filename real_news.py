@@ -33,17 +33,22 @@ else:
 s3client = boto3.client('s3', 
                     aws_access_key_id=AWS_ACCESS_KEY,
                     aws_secret_access_key=AWS_SECRET_KEY)
-if __name__ == 'main':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--path', type=str,
-                        default = 'crawl-data/CC-NEWS/2020/10/CC-NEWS-20201015070535-00171.warc.gz',
-                        help='in path')
-    parser.add_argument('--bucket_name', type=str,
+# python real_news.py --path crawl-data/CC-NEWS/2020/10/CC-NEWS-20201015140400-00177.warc.gz
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description = 'Collects and parses a news file')
+    parser.add_argument('--path', 
+                        type=str,
+                        help='file name, example crawl-data/CC-NEWS/2020/10/CC-NEWS-20201015070535-00171.warc.gz')
+    parser.add_argument('--bucket_name', 
+                        type=str,
                         default = 'real-news',
                         help='out path')
-    parser.add_argument('--propaganda', action='store_true',
+    parser.add_argument('--propaganda', 
+                        action='store_true',
                         help='Download some propaganda instead of real news')
-    parser.add_argument('--allow_all', type=bool,
+    parser.add_argument('--allow_all', 
+                        type=bool,
                         default = True,
                         help='Whether to allow all news sources or limit to the Google top 5000 sources, default True')
     args = parser.parse_args()
@@ -65,7 +70,7 @@ if __name__ == 'main':
 
     out_prefix = 'propaganda-' if args.propaganda else ''
 
-    out_key = '{}{}/{}.jsonl'.format(out_prefix, args.path.split('/')[1], rest)
+    out_key = '{}{}/{}.jsonl'.format(out_prefix, archive_date, rest)
 
     print('started',datetime.datetime.now())
     with TemporaryFile(mode='w+b', dir=output_path) as warctemp:

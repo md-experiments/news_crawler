@@ -19,7 +19,7 @@ from utils import parse_record
 # s3client = boto3.client('s3', config=Config(signature_version=UNSIGNED))
 
 
-file_key = 'aws_key.csv'
+file_key = '../aws_key.csv'
 # Looks for credentials in local file
 if os.path.exists(file_key):
     keys = pd.read_csv(file_key)

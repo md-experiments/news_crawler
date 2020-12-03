@@ -14,8 +14,11 @@ For a sample result, consider the included `realnews_tiny.jsonl` file (also tota
 
 ## Usage with Docker
 
-Build the image
-```docker build --tag news_crawl .```
+Clone this repo, move to real_news folder, build the image
+```
+cd real_news
+docker build --tag real_news .
+```
 
 Run on a selected file
 ```python
@@ -29,7 +32,7 @@ docker run news_crawl
 
 For example for the file `CC-NEWS-20201015155253-00179.warc.gz`
 ```python
-docker run news_crawl
+docker run real_news
      -e AWS_ACCESS_KEY=my_super_access_key
      -e AWS_SECRET_KEY=my_super_secret_key
     python real_news.py

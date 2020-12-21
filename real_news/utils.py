@@ -169,3 +169,9 @@ def parse_record(record, propaganda=False, allow_all=None):
     article['warc_date'] = record.rec_headers['WARC-Date']
     yield article
 
+
+def get_timestamp(out = None):
+    if out == None:
+        out = datetime.datetime.now()
+    out = str(out).replace('-','').replace(' ','_').replace(':','')[:15]
+    return out

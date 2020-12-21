@@ -8,8 +8,8 @@ notebooks/
 *.csv
 
 tmp*
+job_*
 
-logs/
 data/
 database_specs
 experiments/

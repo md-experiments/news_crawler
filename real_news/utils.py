@@ -5,7 +5,7 @@ import os
 import re
 import newspaper
 
-from variable_defaults import PROPAGANDA_SUBDOMAINS, BANNED_EXTENSIONS, BANNED_STRINGS, ALLOWED_SUBDOMAINS, is_banned_regex
+from .variable_defaults import PROPAGANDA_SUBDOMAINS, BANNED_EXTENSIONS, BANNED_STRINGS, ALLOWED_SUBDOMAINS, is_banned_regex
 
 def _url_seems_ok(url, domain_to_allowed_subdomains, allow_all = None):
     """

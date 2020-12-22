@@ -61,7 +61,7 @@ class RealNews():
             outcome = 'Failed'
             dt1 = datetime.datetime.now()
         
-        file_name = self.make_response(outcome, dt0, dt1, job_type = args.job_type, payload = payload)
+        file_name = self.make_response(outcome, dt0, dt1, job_type = self.args.job_type, payload = payload)
         self.s3client.upload_file(file_name, args.bucket_name, file_name)
 
     def parse_news_file(self, output_path):

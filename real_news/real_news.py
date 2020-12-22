@@ -14,7 +14,7 @@ from warcio import ArchiveIterator
 import datetime
 from botocore import UNSIGNED
 from botocore.config import Config
-from utils import parse_record, get_timestamp
+from .utils import parse_record, get_timestamp
 
 # NOTE: You might have to put in your credentials here, like
 # s3client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)

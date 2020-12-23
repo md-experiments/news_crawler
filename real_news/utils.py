@@ -4,7 +4,8 @@ from urllib.parse import urlparse
 import os
 import re
 import newspaper
-
+import datetime
+import pandas as pd
 from .variable_defaults import PROPAGANDA_SUBDOMAINS, BANNED_EXTENSIONS, BANNED_STRINGS, ALLOWED_SUBDOMAINS, is_banned_regex
 
 def _url_seems_ok(url, domain_to_allowed_subdomains, allow_all = None):
@@ -175,3 +176,15 @@ def get_timestamp(out = None):
         out = datetime.datetime.now()
     out = str(out).replace('-','').replace(' ','_').replace(':','')[:15]
     return out
+
+def get_keys(file_key = 'aws_key.csv'):
+    # Looks for credentials in local file
+    if os.path.exists(file_key):
+        keys = pd.read_csv(file_key)
+        AWS_ACCESS_KEY = keys['Access key ID'][0]
+        AWS_SECRET_KEY = keys['Secret access key'][0]
+    # Looks for credentials as environment variables (recommended)
+    else:
+        AWS_ACCESS_KEY = os.environ['AWS_ACCESS_KEY']
+        AWS_SECRET_KEY = os.environ['AWS_SECRET_KEY']
+    return AWS_ACCESS_KEY, AWS_SECRET_KEY

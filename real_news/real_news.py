@@ -14,7 +14,7 @@ from warcio import ArchiveIterator
 import datetime
 from botocore import UNSIGNED
 from botocore.config import Config
-from .utils import parse_record, get_timestamp
+from .utils import parse_record, get_timestamp, get_keys
 
 # NOTE: You might have to put in your credentials here, like
 # s3client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
@@ -25,17 +25,7 @@ from .utils import parse_record, get_timestamp
 class RealNews():
     def __init__(self, args):
         self.args = args
-        # Looks for credentials in local file
-        file_key = args.file_key
-        if os.path.exists(file_key):
-            keys = pd.read_csv(file_key)
-            AWS_ACCESS_KEY = keys['Access key ID'][0]
-            AWS_SECRET_KEY = keys['Secret access key'][0]
-        # Looks for credentials as environment variables (recommended)
-        else:
-            AWS_ACCESS_KEY = os.environ['AWS_ACCESS_KEY']
-            AWS_SECRET_KEY = os.environ['AWS_SECRET_KEY']
-
+        AWS_ACCESS_KEY, AWS_SECRET_KEY = get_keys(args.file_key)
         s3client = boto3.client('s3', 
                         aws_access_key_id=AWS_ACCESS_KEY,
                         aws_secret_access_key=AWS_SECRET_KEY)
@@ -49,7 +39,7 @@ class RealNews():
             if self.args.job_type == 'TEST':
                 time.sleep(2)
                 payload = 'TEST'
-            elif self.args.job_type == 'CC_NEWS':
+            elif self.args.job_type == 'CC-NEWS':
                 output_path = './'
                 print('started',dt0)
                 payload = self.parse_news_file(output_path)
@@ -62,7 +52,7 @@ class RealNews():
             dt1 = datetime.datetime.now()
         
         file_name = self.make_response(outcome, dt0, dt1, job_type = self.args.job_type, payload = payload)
-        self.s3client.upload_file(file_name, args.bucket_name, file_name)
+        self.s3client.upload_file(file_name, self.args.bucket_name, file_name)
 
     def parse_news_file(self, output_path):
         archive_date = self.args.path.split('/')[1]
@@ -76,15 +66,15 @@ class RealNews():
         out_key = '{}{}/{}.jsonl'.format(out_prefix, archive_date, rest)
 
         with TemporaryFile(mode='w+b', dir=output_path) as warctemp:
-            self.s3client.download_fileobj('commoncrawl', args.path, warctemp)
+            self.s3client.download_fileobj('commoncrawl', self.args.path, warctemp)
             warctemp.seek(0)
 
             with NamedTemporaryFile(mode='w', dir=output_path) as f:
                 for record in tqdm(ArchiveIterator(warctemp, no_record_parse=False)):
-                    for parsed_record in parse_record(record, propaganda=args.propaganda, allow_all=allow_all):
+                    for parsed_record in parse_record(record, propaganda=self.args.propaganda, allow_all=allow_all):
                         f.write(json.dumps(parsed_record) + '\n')
 
-                self.s3client.upload_file(f.name, args.bucket_name, out_key)
+                self.s3client.upload_file(f.name, self.args.bucket_name, out_key)
 
             print("I guess I'm done now")
         return rest

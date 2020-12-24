@@ -3,7 +3,6 @@ import json
 import os
 import re
 from tempfile import TemporaryFile, NamedTemporaryFile
-import pandas as pd
 
 import socket
 import time

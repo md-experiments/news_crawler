@@ -6,6 +6,7 @@ notebooks/
 
 *.db
 *.csv
+aws_*
 
 tmp*
 job_*

@@ -176,13 +176,15 @@ def get_timestamp(out = None):
     out = str(out).replace('-','').replace(' ','_').replace(':','')[:15]
     return out
 
-def get_keys(file_key = 'aws_key.csv'):
+def get_keys(file_key = 'aws_key_list.txt'):
     # Looks for credentials in local file
     if os.path.exists(file_key):
-        #£keys = pd.read_csv(file_key)
-        #AWS_SECRET_KEY = keys['Secret access key'][0]
-        ##AWS_ACCESS_KEY = keys['Access key ID'][0]
-        pass
+        with open(file_key,'r') as f:
+            secrets = f.readlines()
+        secrets = [s[:-1] if s.endswith('\n') else s for s in secrets]
+        secrets_dict = {s.split('=')[0]:s.split('=')[1] for s in secrets}
+        AWS_ACCESS_KEY = secrets_dict['AWS_ACCESS_KEY']
+        AWS_SECRET_KEY = secrets_dict['AWS_SECRET_KEY']
     # Looks for credentials as environment variables (recommended)
     else:
         AWS_ACCESS_KEY = os.environ['AWS_ACCESS_KEY']

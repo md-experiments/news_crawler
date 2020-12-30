@@ -49,9 +49,7 @@ class RealNews():
         except:
             outcome = 'Failed'
             dt1 = datetime.datetime.now()
-        
-        file_name = self.make_response(outcome, dt0, dt1, job_type = self.args.job_type, payload = payload)
-        self.s3client.upload_file(file_name, self.args.bucket_name, file_name)
+        return outcome, payload
 
     def parse_news_file(self, output_path):
         archive_date = self.args.path.split('/')[1]
@@ -77,25 +75,7 @@ class RealNews():
 
             print("I guess I'm done now")
         return rest
-
-    def make_response(self,outcome, dt0, dt1, job_type, payload):
-        host_name = socket.gethostname() 
-        host_ip = socket.gethostbyname(host_name) 
-        dt0 = get_timestamp(dt0)
-        dt1 = get_timestamp(dt1)
-        out = {
-            'started': dt0,
-            'finished': dt1,
-            'outcome': outcome,
-            'job_type': job_type,
-            'payload': payload,
-            'host_name': host_name,
-            'host_ip': host_ip
-        }
-        file_path = f'logs/job_{job_type}_{dt1}.txt'
-        with open(file_path, 'w') as f:
-            json.dump(out,f)
-        return file_path        
+    
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description = 'Collects and parses a news file')

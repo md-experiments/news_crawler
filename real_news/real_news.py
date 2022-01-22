@@ -13,7 +13,7 @@ from warcio import ArchiveIterator
 import datetime
 from botocore import UNSIGNED
 from botocore.config import Config
-from .utils import parse_record, get_timestamp, get_keys
+from utils import parse_record, get_timestamp, get_keys
 
 # NOTE: You might have to put in your credentials here, like
 # s3client = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
@@ -95,7 +95,7 @@ if __name__ == '__main__':
                         help='Takes CC-NEWS or TEST, defaults to TEST')
     parser.add_argument('--file_key', 
                         type=str,
-                        default = 'aws_key.csv',
+                        default = 'aws_key_list.txt',
                         help='Path to file with AWS creds')
     parser.add_argument('--allow_all', 
                         type=bool,
